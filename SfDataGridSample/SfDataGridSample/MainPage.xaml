@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:syncfusion="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
+             xmlns:local="clr-namespace:SfDataGridSample"
+             x:Class="SfDataGridSample.MainPage">
+
+
+    <ContentPage.BindingContext>
+        <local:OrderInfoRepository x:Name="viewModel"/>
+    </ContentPage.BindingContext>
+
+    <Grid RowDefinitions="Auto,*" Padding="10">
+        <!-- Search Bar at the top -->
+        <Grid Grid.Row="0" Margin="0,5,0,10" HorizontalOptions="Center">
+            <SearchBar x:Name="filterText" WidthRequest="350" HorizontalOptions="Center"
+                           Placeholder="Search..." 
+                           PlaceholderColor="Gray"
+                           TextChanged="OnSearchBarTextChanged"/>
+        </Grid>
+        <syncfusion:SfDataGrid Grid.Row="1" x:Name="dataGrid" HorizontalOptions="Center" Margin="20"
+                            ColumnWidthMode="Auto"
+                            GridLinesVisibility="Both" 
+                            HeaderGridLinesVisibility="Both"
+                            ItemsSource="{Binding OrderInfoCollection}">
+            <syncfusion:SfDataGrid.Columns>
+                <syncfusion:DataGridNumericColumn MappingName="OrderID" HeaderText="Order ID" Format="#"/>
+                <syncfusion:DataGridTextColumn MappingName="CustomerName" HeaderText="Customer Name"/>
+                <syncfusion:DataGridTextColumn MappingName="ShipCountry" HeaderText="Ship Country"/>
+                <syncfusion:DataGridTextColumn MappingName="ShipCity" HeaderText="Ship City"/>
+                <syncfusion:DataGridDateColumn MappingName="OrderDate" HeaderText="Order Date"/>
+            </syncfusion:SfDataGrid.Columns>
+            <syncfusion:SfDataGrid.EmptyView>
+                <local:FilterItem Filter="{Binding Source={x:Reference filterText},Path=Text}"
+                                  x:Name="filter"/>
+            </syncfusion:SfDataGrid.EmptyView>
+            <syncfusion:SfDataGrid.EmptyViewTemplate>
+                <DataTemplate>
+                    <Label Text="{Binding Source={x:Reference filterText},Path=Text, StringFormat='{0} is not found'}"
+                           TextColor="Black"
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           FontSize="14"
+                           FontFamily="Roboto-Regular"/>
+                </DataTemplate>
+            </syncfusion:SfDataGrid.EmptyViewTemplate>
+        </syncfusion:SfDataGrid>
+    </Grid>
+</ContentPage>
